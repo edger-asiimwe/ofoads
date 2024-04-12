@@ -34,10 +34,19 @@ class Food(db.Model):
 
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    food_id = db.Column(db.Integer, db.ForeignKey('food.id'), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    food_id = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.Integer, nullable=False)
     restaurant_id = db.Column(db.Integer, nullable=False)
     status = db.Column(db.String(100), nullable=False)  # Status can be 'Pending', 'Completed', etc.
+
+    @validates('restaurant_id')
+    def validate_restaurant_id(self, key, restaurant_id):
+        # Perform validation to ensure that all food items in the order share the same restaurant ID
+        if self.food_id:  # Check if food_id is present
+            food = Food.query.get(self.food_id)
+            if food and food.restaurant_id != restaurant_id:
+                raise ValueError("All food items in the order must belong to the same restaurant")
+        return restaurant_id
 
 class Client(db.Model):
     id = db.Column(db.Integer, primary_key=True)
