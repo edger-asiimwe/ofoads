@@ -25,11 +25,11 @@ class Restaurant(db.Model):
     password = db.Column(db.String(100), nullable=False)
 
 class Food(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     price = db.Column(db.Float, nullable=False)
     preparation_time = db.Column(db.Integer, nullable=False)
-    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurant.id'), nullable=False)
+    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurant.id'), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     restaurant = db.relationship('Restaurant', backref=db.backref('foods', lazy=True))
 
 class Order(db.Model):
