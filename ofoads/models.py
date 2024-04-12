@@ -9,6 +9,7 @@ class User(db.Model):
     password_hash = db.Column(db.String(128))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
     role = db.Column(db.String(50), nullable=False)  # Role can be 'admin', 'restaurant', or 'client'
+    
     def __repr__(self) -> str:
         return 'User {}'.format(self.usernames)
     
