@@ -1,5 +1,6 @@
-from ofoads import db
 from datetime import datetime
+
+from ofoads import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
 class User(db.Model):  

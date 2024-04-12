@@ -1,7 +1,7 @@
 import os 
 
-from ofoads import init_app, db
-from ofoads.models import User
+from ofoads_app import init_app, db
+from ofoads_app.models import User
 
 app = init_app()
 
