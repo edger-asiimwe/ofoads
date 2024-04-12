@@ -2,6 +2,6 @@ from flask import render_template
 
 from . import restaurant
 
-@restaurant.route('/login')
-def login():
-    return render_template('restaurant/login.html')
+@restaurant.route('/dashboard')
+def dashboard():
+    return render_template('restaurant/dashboard.html')
