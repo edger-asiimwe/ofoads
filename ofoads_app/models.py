@@ -59,7 +59,7 @@ class Restaurant(db.Model):
     admin_id = db.Column(db.Integer, nullable=False)
     first_name = db.Column(db.String, nullable=False)
     last_name = db.Column(db.String, nullable=False)
-    name = db.Column(db.String, nullable=False)
+    name = db.Column(db.String, nullable=False) # TODO: Add unique constraint and rollback on error
     latitude = db.Column(db.String, nullable=False)
     longitude = db.Column(db.String, nullable=False)
     verified = db.Column(db.Boolean, nullable=False, default=False)
@@ -69,6 +69,28 @@ class Restaurant(db.Model):
 
     def set_admin(self, user_id):
         self.admin_id = user_id
+
+    def add_restaurant(self, form):
+        # Create a new user to access the restaurant dashboard
+        user = User(email=form.email.data, role='restaurant')
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+
+        # Retrieve the new created user to set as the admin of the restaurant
+        created_user = User.query.filter_by(email=form.email.data).first()
+
+        # Add the restaurant to the database with created user as the admin
+        self.set_admin(created_user.id)
+        self.first_name = form.first_name.data
+        self.last_name = form.last_name.data
+        self.name = form.name.data
+        self.latitude = form.latitude.data
+        self.longitude = form.longitude.data
+        db.session.add(self)
+        db.session.commit()
+
+        return self
 
     def __repr__(self):
         return 'Restaurant: {} - {}'.format(self.name, self.id)
