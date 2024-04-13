@@ -31,13 +31,6 @@ def logout():
     return redirect(url_for('auth.login'))
 
 
-
-
-
-
-
-
-
 # Method to add demo users in the database.
 # DO NOT DELETE THIS METHOD
 @auth.route('/demo_users')

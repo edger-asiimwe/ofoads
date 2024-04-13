@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block title %}Restaurant - Registration{% endblock %}
+
+{% block content %}
+
+<div class="isolate bg-white px-6 py-6 sm:py-8 lg:px-8 flex flex-col sm:flex-row h-screen">
+    <div class="w-full sm:w-1/2">
+        <div class="absolute inset-x-0 top-0 bottom-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]" aria-hidden="true">
+            <div class="relative left-1/2 -z-10 aspect-[1155/678] w-[36.125rem] max-w-none -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-40rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+        </div>
+
+        <div class="mx-auto max-w-2xl text-center">
+            <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Register Restaurant</h2>
+        </div>
+
+        <form action="#" method="POST" class="mx-auto mt-16 max-w-xl sm:mt-6">
+            {{ form.hidden_tag() }} 
+            <div class="grid grid-cols-1 gap-x-8 gap-y-2 sm:grid-cols-2">
+                <div>
+                <label for="first-name" class="block text-sm font-semibold leading-6 text-gray-900">First name</label>
+                <div class="mt-2.5">
+                    {{ form.first_name(class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6") }}
+                </div>
+                </div>
+                <div>
+                <label for="last-name" class="block text-sm font-semibold leading-6 text-gray-900">Last name</label>
+                <div class="mt-2.5">
+                    {{ form.last_name(class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6") }}
+                </div>
+                </div>
+                <div class="sm:col-span-2">
+                <label for="company" class="block text-sm font-semibold leading-6 text-gray-900">Restaurant Name</label>
+                <div class="mt-2.5">
+                    {{ form.name(class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6") }}
+                </div>
+                </div>
+                <div class="sm:col-span-2">
+                <label for="email" class="block text-sm font-semibold leading-6 text-gray-900">Email</label>
+                <div class="mt-2.5">
+                    {{ form.email(class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6") }}
+                </div>
+                </div>
+                <div class="sm:col-span-2">
+                    <label for="password" class="block text-sm font-semibold leading-6 text-gray-900">Password</label>
+                    <div class="mt-2.5">
+                        {{ form.password(class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6") }}
+                    </div>
+                </div>
+                <div>
+                    <label for="latitude" class="block text-sm font-semibold leading-6 text-gray-900">Latitude</label>
+                    <div class="mt-2.5">
+                        {{ form.latitude(class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", readonly=True) }}
+                    </div>
+                </div>
+                <div>
+                    <label for="longitude" class="block text-sm font-semibold leading-6 text-gray-900">Longitude</label>
+                    <div class="mt-2.5">
+                        {{ form.longitude(class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", readonly=True) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-10">
+                {{ form.submit(class="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600") }}
+            </div>
+        </form>
+    </div>
+
+    <div class="w-full sm:w-1/2">
+        <h4 class="mt-6 text-lg font-bold text-gray-900 pl-4">Select Restaurant Location</h4>
+        <div id="map" style="height: 500px;" class="mx-auto mt-6 max-w-xl sm:mt-2 w-full"></div>
+    </div>
+
+</div>
+
+<script>
+    // Initialize Leaflet map
+    var map = L.map('map').setView([-0.616965, 30.657286], 13);
+
+    // Add a tile layer - Esri World Imagery
+    var mapLink = '<a href="http://www.esri.com/">Esri</a>';
+    var wholink = 'i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
+
+    L.tileLayer(
+        'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        maxZoom: 18,
+    }).addTo(map);
+
+    // Add a marker layer
+    var marker = L.marker([-0.616965, 30.657286], { draggable: true }).addTo(map);
+
+    // Function to update form fields with marker position
+    function updateFormFields(latlng) {
+        var latInput = document.getElementById('latitude');
+        var lngInput = document.getElementById('longitude');
+
+        latInput.value = latlng.lat.toFixed(6);
+        lngInput.value = latlng.lng.toFixed(6);
+    }
+
+    // Event listener for marker dragend
+    marker.on('dragend', function(event) {
+        var markerPosition = event.target.getLatLng();
+        updateFormFields(markerPosition);
+    });
+
+    // Event listener for map click
+    map.on('click', function(event) {
+        marker.setLatLng(event.latlng);
+        updateFormFields(event.latlng);
+    });
+</script>
+
+{% endblock %}
