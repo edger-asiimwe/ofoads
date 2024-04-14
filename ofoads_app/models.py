@@ -1,7 +1,7 @@
 from datetime import datetime
 from ofoads_app import db, login_manager
 
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 class User(UserMixin, db.Model): 
@@ -31,6 +31,14 @@ class User(UserMixin, db.Model):
     @property
     def is_client(self):
         return self.role == 'client'
+    
+    @property
+    def restaurant_id(self):
+        return Restaurant.query.filter_by(admin_id=current_user.id).first().id
+    
+    @property
+    def restaurant_name(self):
+        return Restaurant.query.filter_by(admin_id=current_user.id).first().name
     
     @property
     def next_page_url(self):
@@ -95,3 +103,69 @@ class Restaurant(db.Model):
     def __repr__(self):
         return 'Restaurant: {} - {}'.format(self.name, self.id)
 
+
+
+class Food(db.Model):
+
+    __tablename__ = 'food'
+
+    id = db.Column(db.Integer, primary_key=True)
+    restaurant_id = db.Column(db.Integer, nullable=False)
+    name = db.Column(db.String, nullable=False)
+    price = db.Column(db.Integer, nullable=False)
+    time = db.Column(db.Integer, nullable=False)
+    status = db.Column(db.Boolean, nullable=False, default=False)
+
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    def get_foods(self):
+        foods = Food.query.filter_by(restaurant_id=current_user.restaurant_id).order_by(Food.created_at.desc()).all()
+        return [{
+            'id': food.id,
+            'name': food.name,
+            'price': food.price,
+            'time': food.time,
+        } for food in foods
+        ]
+        
+
+    def add_food(self, request):
+        print(current_user.restaurant_id)
+        self.restaurant_id = current_user.restaurant_id
+        self.name = request.form['name']
+        self.price = request.form['price']
+        self.time = self.add_time_calculation(request.form['time'], request.form['min_hour'])
+        db.session.add(self)
+        db.session.commit()
+
+        return {
+            'id': self.id,
+            'name': self.name,
+            'price': self.price,
+            'time': self.time,
+            'status': self.status
+        }
+    
+    def update_food(self, request):
+        food = Food.query.filter_by(id=request.form['id']).first()
+        food.name = request.form['name']
+        food.price = request.form['price']
+        food.time = self.add_time_calculation(request.form['time'], request.form['min_hour'])
+        db.session.commit()
+
+        return {
+            'id': food.id,
+            'name': food.name,
+            'price': food.price,
+            'time': food.time,
+            'status': food.status
+        }
+    
+    def add_time_calculation(self, time, min_hour):
+        if min_hour == "hours":
+            return int(time * 60)
+        return int(time)
+
+    def __repr__(self):
+        return 'Food: {} - {} - {} - {} - {}'.format(self.id, self.name, self.price, self.time, self.status)

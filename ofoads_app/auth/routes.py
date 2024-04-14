@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import login_user, logout_user, login_required
 
-from ..models import User
+from ..models import User, Restaurant
 from ..forms import LoginForm
 from .. import db
 
@@ -53,6 +53,15 @@ def register():
         }
     ]
 
+    hotels = {
+        "first_name": "Ndayisenga",
+        "last_name": "Jean Paul",
+        "name": "Kigali Serena Hotel",
+        "latitude": "-1.9441",
+        "longitude": "30.0619",
+        "verified": True
+    }
+
     for user in users:
         new_user = User(email=user['email'], role=user['role'])
         new_user.set_password(user['password'])
@@ -60,5 +69,19 @@ def register():
         db.session.commit()
 
         print('User Added')
+
+        if new_user.is_restaurant:
+            restaurant = Restaurant()
+            restaurant.set_admin(new_user.id)
+            restaurant.first_name = hotels['first_name']
+            restaurant.last_name = hotels['last_name']
+            restaurant.name = hotels['name']
+            restaurant.latitude = hotels['latitude']
+            restaurant.longitude = hotels['longitude']
+            restaurant.verified = hotels['verified']
+            db.session.add(restaurant)
+            db.session.commit()
+
+            print('Restaurant Added')
 
     return "Success"

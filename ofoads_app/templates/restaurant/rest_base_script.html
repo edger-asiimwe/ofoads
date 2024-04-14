@@ -1,0 +1,21 @@
+<script>
+
+    // Function to update the Order Count Number
+    function updateValue() {
+        $.ajax({
+            url: "{{ url_for('restaurant.order_count') }}",
+            method: 'GET',
+            success: function(response) {
+                $('#value-container').text(response);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error updating value:', error);
+            }
+        });
+    }
+    // Update value initially
+    updateValue();
+    // Set interval to update the value every 5 minutes
+    setInterval(updateValue, 5 * 1000); 
+
+</script>

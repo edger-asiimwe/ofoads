@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_cors import CORS
 
 import os
 from dotenv import load_dotenv
@@ -22,6 +23,7 @@ def init_app():
 
     db.init_app(app)
     login_manager.init_app(app)
+    CORS(app)
 
     with app.app_context():
         from .admin import admin as admin_blueprint
