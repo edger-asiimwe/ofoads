@@ -1,6 +1,6 @@
 <script>
 
-    // Function to update the Order Count Number
+    // Function to update the Orders Count Number on the Side Bar
     function updateValue() {
         $.ajax({
             url: "{{ url_for('restaurant.order_count') }}",
@@ -13,9 +13,34 @@
             }
         });
     }
-    // Update value initially
-    updateValue();
-    // Set interval to update the value every 5 minutes
-    setInterval(updateValue, 5 * 1000); 
+    updateValue(); // Update value initially
+    setInterval(updateValue,  6000 * 1000); // Uupdate the value every 5 minutes
+
+    function submitForm(event) {
+        event.preventDefault();
+
+        // Serialize form data
+        var formData = new FormData(event.target);
+
+        var modal = $('#addFoodModal');
+
+        // Send form data via AJAX
+        $.ajax({
+            url: event.target.action,
+            method: event.target.method,
+            data: formData, 
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                console.log('Form submitted successfully:', response);
+                modal.hide();
+            },
+            error: function(xhr, status, error) {
+                console.error('Error submitting form:', error);
+            }
+        });
+    }
+    $('#addFoodModal form').submit(submitForm); // Attach form submission event listener to the Add Food Food
+    $('#editFoodModal form').submit(submitForm);
 
 </script>

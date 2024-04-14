@@ -43,8 +43,5 @@ def menu():
 
 @restaurant.route('/add_food', methods=['POST', 'PUT'])
 def add_food():
-    if request.method == 'PUT':
-        food = Food().update_food(request)
-    else:
-        food = Food().add_food(request)
+    food = Food().add_food(request)
     return jsonify({'food': food})

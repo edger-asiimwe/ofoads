@@ -131,7 +131,6 @@ class Food(db.Model):
         
 
     def add_food(self, request):
-        print(current_user.restaurant_id)
         self.restaurant_id = current_user.restaurant_id
         self.name = request.form['name']
         self.price = request.form['price']
@@ -164,7 +163,7 @@ class Food(db.Model):
     
     def add_time_calculation(self, time, min_hour):
         if min_hour == "hours":
-            return int(time * 60)
+            return int(time) * 60
         return int(time)
 
     def __repr__(self):

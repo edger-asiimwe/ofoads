@@ -34,7 +34,7 @@ def logout():
 # Method to add demo users in the database.
 # DO NOT DELETE THIS METHOD
 @auth.route('/demo_users')
-def register():
+def add_demo_data():
     users = [
         {
             'email': 'admin@gmail.com',
