@@ -29,4 +29,16 @@ class RestaurantRegistrationForm(FlaskForm):
         if Restaurant.query.filter_by(name=field.data).first():
             raise ValidationError(message='Restaurant Name is already in use')
         
+
+
+class ClientRegistrationForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
     
+    phone_number = StringField('Phone Number', validators=[DataRequired(), Length(min=10, max=15)])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    submit = SubmitField('Register')       
+    
+    def validate_email(self, field):
+        if User.query.filter_by(email=field.data).first():
+            raise ValidationError(message='Email is already in use')
