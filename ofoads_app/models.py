@@ -85,7 +85,7 @@ class Restaurant(db.Model):
         db.session.add(user)
         db.session.commit()
 
-        # Retrieve the new created user to set as the admin of the restaurant
+        # Retrieve the new crgit eated user to set as the admin of the restaurant
         created_user = User.query.filter_by(email=form.email.data).first()
 
         # Add the restaurant to the database with created user as the admin
@@ -102,6 +102,7 @@ class Restaurant(db.Model):
 
     def __repr__(self):
         return 'Restaurant: {} - {}'.format(self.name, self.id)
+
 
 
 class Food(db.Model):
@@ -169,7 +170,6 @@ class Food(db.Model):
         return 'Food: {} - {} - {} - {} - {}'.format(self.id, self.name, self.price, self.time, self.status)
     
 
-<<<<<<< HEAD
 
 
 
@@ -198,34 +198,3 @@ class Food(db.Model):
         # Add the user to the database
         db.session.add(user)
         db.session.commit()
-=======
-class Client(db.Model):
-
-    __tablename__ = 'client'
-
-    id = db.Column(db.Integer)
-    name = db.Column(db.String, nullable=False)
-    phone_number = db.Column(db.String, nullable=False)
-
-    def add_client(self, form):
-        user = User(email=form.email.data, role='client')
-        user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.commit()
-
-        created_user = User.query.filter_by(email=form.email.data).form()
-
-        self.id = created_user.id
-        self.name = form.name.data
-        self.phone_number = form.phone_number.data
-        db.session.add(self)
-        db.session.commit()
-
-        return self
-    
-    def __repr__(self):
-        return 'Client: {} - {}'.format(self.id, self.name)
-    
-
-
->>>>>>> 4e7d383b1ae90459a332b436dec1f17ca865d99d
