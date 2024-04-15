@@ -169,36 +169,6 @@ class Food(db.Model):
         return 'Food: {} - {} - {} - {} - {}'.format(self.id, self.name, self.price, self.time, self.status)
     
 
-<<<<<<< HEAD
-
-
-
-    class Client(db.model):
-     __tablename__ = 'clients'
-
-    id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(50), nullable=False)
-    last_name = db.Column(db.String(50), nullable=False)
-    phone_number = db.Column(db.String(15), nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password_hash = db.Column(db.String(128), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-
-
-
-
-    def add_client(self, form):
-        user = User(
-            email=form.email.data,
-            password=form.password.data,
-            
-            name=form.name.data,
-            role='client'
-        )
-        # Add the user to the database
-        db.session.add(user)
-        db.session.commit()
-=======
 class Client(db.Model):
 
     __tablename__ = 'client'
@@ -228,4 +198,3 @@ class Client(db.Model):
     
 
 
->>>>>>> 4e7d383b1ae90459a332b436dec1f17ca865d99d
