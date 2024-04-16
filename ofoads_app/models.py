@@ -174,7 +174,7 @@ class Client(db.Model):
 
     __tablename__ = 'client'
 
-    id = db.Column(db.Integer)
+    id = db.Column(db.Integer,primary_key=True)
     name = db.Column(db.String, nullable=False)
     phone_number = db.Column(db.String, nullable=False)
 
@@ -184,7 +184,7 @@ class Client(db.Model):
         db.session.add(user)
         db.session.commit()
 
-        created_user = User.query.filter_by(email=form.email.data).form()
+        created_user = User.query.filter_by(email=form.email.data).first()
 
         self.id = created_user.id
         self.name = form.name.data
