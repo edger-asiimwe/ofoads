@@ -119,7 +119,7 @@ class Food(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
-    def get_foods(self):
+    def get_foods_by_restaurant(self):
         foods = Food.query.filter_by(restaurant_id=current_user.restaurant_id).order_by(Food.created_at.desc()).all()
         return [{
             'id': food.id,
@@ -128,6 +128,10 @@ class Food(db.Model):
             'time': food.time,
         } for food in foods
         ]
+    
+    def get_all_foods(self):
+        foods = Food.query.with_entities(Food.name).distinct().order_by(Food.name).all()
+        return [food.name for food in foods]
         
 
     def add_food(self, request):
