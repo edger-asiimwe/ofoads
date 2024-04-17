@@ -38,10 +38,21 @@ def orders():
 
 @restaurant.route('/menu')
 def menu():
-    foods = Food().get_foods()
+    #foods = Food().get_foods()
+    food_model = Food()
+    foods = food_model.get_foods_by_restaurant()
     return render_template('restaurant/menu.html', foods=foods)
 
 @restaurant.route('/add_food', methods=['POST', 'PUT'])
 def add_food():
     food = Food().add_food(request)
     return jsonify({'food': food})
+
+# @restaurant.route('/menu')
+# def menu():
+#     # Create an instance of the Food model
+    
+#     # Call the get_foods_by_restaurant method to retrieve foods for the current restaurant
+#     foods = food_model.get_foods_by_restaurant()
+#     # Render the template with the retrieved foods
+#     return render_template('restaurant/menu.html', foods=foods)
