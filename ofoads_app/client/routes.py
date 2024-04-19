@@ -29,3 +29,8 @@ def dashboard():
 def food_display():
     foods = Food().get_all_foods()
     return render_template('client/food_display.html', foods=foods)  
+
+
+@client.route('/food_price/<food_name>', methods=['GET', 'POST'])
+def food_price(food_name):
+    return food_name
