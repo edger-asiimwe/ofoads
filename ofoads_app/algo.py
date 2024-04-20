@@ -2,15 +2,15 @@
 from datetime import datetime, time, timedelta
 from geopy.distance import geodesic
 import threading
-# import requests
-from . models import Food, Restaurant
-from . import db
+import requests
+from .models import Food, Restaurant
+from .. import db
 def find_best_restaurant(user_location, radius=6):
     all_restaurants = Restaurant.query.all()
     valid_restaurants = []
 
     for restaurant in all_restaurants:
-        distance = get_distance(user_location, (restaurant.latitude, restaurant.longitude))
+        distance = get_distance(user_location, (float(restaurant.latitude), float(restaurant.longitude)))
         if distance <= radius:
             valid_restaurants.append((restaurant, distance))
 

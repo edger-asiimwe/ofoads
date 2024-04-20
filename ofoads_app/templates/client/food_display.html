@@ -16,16 +16,11 @@
         <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
           {% for food in foods %}
             <li  class="py-3 sm:py-4">
-              <form action="/compare_food" method="POST">  <!-- Form for selecting food -->
-                <input type="hidden" name="food" value="{{ food }}">  <!-- Hidden input field to send the selected food -->
-                <button type="submit" class="flex items-center space-x-4">
-                  <div class="flex-1 min-w-0">
-                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                      {{ food }}
-                    </p>
-                  </div>
-                </button>
-              </form>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                  <a href="{{ url_for('client.select_food', selected_food=food) }}">{{ food }}</a> 
+                </p>
+              </div>
             </li>
           {% endfor %}
         </ul>
