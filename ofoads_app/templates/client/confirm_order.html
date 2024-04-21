@@ -1,0 +1,19 @@
+<!-- client/confirm_order.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Order</title>
+</head>
+<body>
+    <h1>Confirm Order</h1>
+    <p>Selected Food: {{ selected_food }}</p>
+    <p>Price: ${{ price }}</p>
+    
+    <form action="{{ url_for('client.place_order', selected_food=selected_food) }}" method="post">
+        <button type="submit">Place Order</button>
+    </form>
+</body>
+</html>

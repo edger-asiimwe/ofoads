@@ -203,3 +203,14 @@ class Client(db.Model):
     
 
 
+class Order(db.Model):
+    __tablename__ = 'orders'
+
+    id = db.Column(db.Integer, primary_key=True)
+    food_id = db.Column(db.Integer, nullable=False)
+    restaurant_id = db.Column(db.Integer, nullable=False)
+    client_id = db.Column(db.Integer, nullable=False)
+    order_time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f"Order(id={self.id}, food_id={self.food_id}, restaurant_id={self.restaurant_id}, client_id={self.client_id}, order_time={self.order_time})"

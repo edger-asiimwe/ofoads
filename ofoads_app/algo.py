@@ -2,9 +2,9 @@
 from datetime import datetime, time, timedelta
 from geopy.distance import geodesic
 import threading
-import requests
+#import requests
 from .models import Food, Restaurant
-from .. import db
+from . import db
 def find_best_restaurant(user_location, radius=6):
     all_restaurants = Restaurant.query.all()
     valid_restaurants = []
