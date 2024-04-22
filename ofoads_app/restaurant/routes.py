@@ -37,12 +37,16 @@ def orders():
     return render_template('restaurant/orders.html')
 
 
+
 @restaurant.route('/menu')
 def menu():
-    #foods = Food().get_foods()
+    # Query foods for the current restaurant
     food_model = Food()
     foods = food_model.get_foods_by_restaurant()
+    
+    # Render the menu template with foods
     return render_template('restaurant/menu.html', foods=foods)
+
 
 @restaurant.route('/add_food', methods=['POST', 'PUT'])
 def add_food():
@@ -51,3 +55,12 @@ def add_food():
 
 
 
+from ..models import Order
+
+@restaurant.route('/orders')
+def orders():
+    # Query pending orders for the current restaurant
+    pending_orders = Order.query.filter_by(restaurant_id=current_user.restaurant_id, status='pending').all()
+    
+    # Render the orders template with pending orders
+    return render_template('restaurant/orders.html', orders=pending_orders)

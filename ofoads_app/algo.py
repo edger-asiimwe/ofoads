@@ -1,52 +1,52 @@
-
-from datetime import datetime, time, timedelta
 from geopy.distance import geodesic
-import threading
-#import requests
 from .models import Food, Restaurant
 from . import db
-def find_best_restaurant(user_location, radius=6):
+
+def find_best_restaurant(user_location, radius=5):
     all_restaurants = Restaurant.query.all()
-    valid_restaurants = []
+    valid_restaurants = {}
 
     for restaurant in all_restaurants:
         distance = get_distance(user_location, (float(restaurant.latitude), float(restaurant.longitude)))
         if distance <= radius:
-            valid_restaurants.append((restaurant, distance))
+            valid_restaurants[restaurant.id] = {
+                'location': (restaurant.latitude, restaurant.longitude),
+                'distance': distance
+            }
 
-    if not valid_restaurants:
-        return None
-
-    best_restaurant = min(valid_restaurants, key=lambda x: x[1])[0]
-    return best_restaurant
+    return valid_restaurants
 
 def get_distance(origin, destination):
     return geodesic(origin, destination).kilometers
 
-def get_preparation_time(selected_food, restaurant_id):
-    food = Food.query.filter_by(restaurant_id=restaurant_id, name=selected_food).first()
-    return food.preparation_time if food else None
+def get_food_info(selected_food, restaurant_ids):
+    food_info = {}
+    for restaurant_id in restaurant_ids:
+        food = Food.query.filter_by(restaurant_id=restaurant_id, name=selected_food).first()
+        if food:
+            food_info[food.id] = {
+                'restaurant_id': restaurant_id,
+                'price': food.price,
+                'time': food.time
+            }
+    return food_info
 
-def get_food_price(selected_food, restaurant_id):
-    food = Food.query.filter_by(restaurant_id=restaurant_id, name=selected_food).first()
-    return food.price if food else None
+def compare_food_items(food_info, restaurant_data, user_location):
+    valid_foods = []
 
-def update_order_count(restaurant_id):
-    restaurant = Restaurant.query.get(restaurant_id)
-    if restaurant:
-        restaurant.orders += 1
-        db.session.commit()
+    for food_id, info in food_info.items():
+        restaurant_id = info['restaurant_id']
+        restaurant_location = restaurant_data.get(restaurant_id)
+        if restaurant_location:
+            distance = restaurant_location['distance']
+            valid_foods.append({
+                'food_id': food_id,
+                'restaurant_id': restaurant_id,
+                'price': info['price'],
+                'time': info['time'],
+                'distance': distance
+            })
 
-def decrement_order_count(restaurant_id):
-    restaurant = Restaurant.query.get(restaurant_id)
-    if restaurant and restaurant.orders > 0:
-        restaurant.orders -= 1
-        db.session.commit()
+    valid_foods.sort(key=lambda x: (x['price'], x['time'], x['distance']))
 
-def schedule_order_completion(restaurant_id, preparation_time):
-    def complete_order():
-        timedelta(seconds=preparation_time)
-        decrement_order_count(restaurant_id)
-
-    thread = threading.Thread(target=complete_order)
-    thread.start()
+    return valid_foods

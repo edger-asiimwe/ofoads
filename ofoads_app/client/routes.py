@@ -74,7 +74,7 @@ def place_order(selected_food):
     order = Order(
         food_id=selected_food,  # Replace selected_food_id with the actual ID of the selected food
         restaurant_id=find_best_restaurant,
-        client_id=current_user.id
+        client_id=current_user.id,
         order_time=datetime.utcnow()  # Add the current time as the order time
     )
 
