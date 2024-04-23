@@ -1,8 +1,9 @@
 from flask import render_template, flash, redirect, url_for, request, jsonify
+from flask_login import current_user
 import random
 
 from .. import db
-from ..models import User, Restaurant, Food
+from ..models import User, Restaurant, Food, Order
 from ..forms import RestaurantRegistrationForm
 
 
@@ -32,9 +33,10 @@ def dashboard():
     return render_template('restaurant/dashboard.html')
 
 
-@restaurant.route('/orders')
-def orders():
-    return render_template('restaurant/orders.html')
+# @restaurant.route('/orders')
+# def orders():
+
+#     return render_template('restaurant/orders.html')
 
 
 
@@ -55,12 +57,11 @@ def add_food():
 
 
 
-from ..models import Order
 
 @restaurant.route('/orders')
 def orders():
     # Query pending orders for the current restaurant
-    pending_orders = Order.query.filter_by(restaurant_id=current_user.restaurant_id, status='pending').all()
+    pending_orders = Order.query.filter_by(restaurant_id=current_user.restaurant_id).all()
     
     # Render the orders template with pending orders
     return render_template('restaurant/orders.html', orders=pending_orders)

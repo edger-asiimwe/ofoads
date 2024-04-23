@@ -7,6 +7,7 @@ from ..models import Client, Food , Order
 from ..forms import ClientRegistrationForm, ClientLocationForm
 from . import client
 from ..algo import find_best_restaurant, get_food_info, compare_food_items
+from datetime import datetime
 
 
 @client.route('/register', methods=['GET', 'POST'])
@@ -61,21 +62,22 @@ def select_food(selected_food):
     # Assuming the first item in valid_foods is the best option
     best_food = valid_foods[0]
 
+    print(best_food['restaurant_id'])
+
     
     # Render the template with selected food information
-    return render_template('client/confirm_order.html', selected_food=selected_food, price=best_food['price'])
+    return render_template('client/confirm_order.html', selected_food=selected_food, price=best_food['price'], restaurant_id=best_food['restaurant_id'])
 
 
 
-@client.route('/place_order/<selected_food>', methods=['POST'])
-def place_order(selected_food):
+@client.route('/place_order/<selected_food>/<restaurant_id>', methods=['POST'])
+def place_order(selected_food, restaurant_id):
     # Assuming the form submits directly to this route
     # Create a new order
     order = Order(
         food_id=selected_food,  # Replace selected_food_id with the actual ID of the selected food
-        restaurant_id=find_best_restaurant,
-        client_id=current_user.id,
-        order_time=datetime.utcnow()  # Add the current time as the order time
+        restaurant_id=restaurant_id,
+        client_id=current_user.id 
     )
 
     db.session.add(order)
