@@ -1,19 +1,43 @@
-<!-- client/confirm_order.html -->
+{% extends 'base.html' %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirm Order</title>
-</head>
-<body>
-    <h1>Confirm Order</h1>
-    <p>Selected Food: {{ selected_food }}</p>
-    <p>Price: ${{ price }}</p>
-    
-    <form action="{{ url_for('client.place_order', selected_food=selected_food, restaurant_id=restaurant_id ) }}" method="post">
-        <button type="submit">Place Order</button>
-    </form>
-</body>
-</html>
+{% block title %}Confirm Order{% endblock %}
+
+{% block content %}
+    <!-- component -->
+    <!-- This is an example component -->
+    <div class="max-w-2xl mx-auto">
+
+        <div class="p-4 max-w-md bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold leading-none text-gray-900 dark:text-white">Confirm Order</h3>
+            </div>
+            <div class="flow-root">
+                <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
+                    <li class="py-3 sm:py-4">
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                Selected Food: {{ selected_food }}
+                            </p>
+                        </div>
+                    </li>
+                    <li class="py-3 sm:py-4">
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                Price: ${{ price }}
+                            </p>
+                        </div>
+                    </li>
+                    <li class="py-3 sm:py-4">
+                        <div class="flex-1 min-w-0">
+                            <form action="{{ url_for('client.place_order', selected_food=selected_food, restaurant_id=restaurant_id ) }}" method="post">
+                                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                    Place Order
+                                </button>
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

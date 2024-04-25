@@ -62,6 +62,8 @@ def select_food(selected_food):
     # Assuming the first item in valid_foods is the best option
     best_food = valid_foods[0]
 
+
+
     print(best_food['restaurant_id'])
 
     

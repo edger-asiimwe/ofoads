@@ -3,7 +3,7 @@ from ofoads_app import db, login_manager
 
 from flask_login import UserMixin, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from sqlalchemy.orm import relationship
 class User(UserMixin, db.Model): 
  
     __tablename__ = 'users'
@@ -201,16 +201,34 @@ class Client(db.Model):
     def __repr__(self):
         return 'Client: {} - {}'.format(self.id, self.name)
     
-
-
 class Order(db.Model):
     __tablename__ = 'orders'
 
     id = db.Column(db.Integer, primary_key=True)
-    food_id = db.Column(db.Integer, nullable=False)
-    restaurant_id = db.Column(db.Integer, nullable=False)
-    client_id = db.Column(db.Integer, nullable=False)
+    food_id = db.Column(db.Integer, db.ForeignKey('food.id'), nullable=False)
+    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurant.id'), nullable=False)
+    client_id = db.Column(db.Integer, db.ForeignKey('client.id'), nullable=False)
     order_time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-
+    
+    # Define relationship with the Client model
+    client = relationship('Client')
+    food = relationship("Food", back_populates="orders")
     def __repr__(self):
         return f"Order(id={self.id}, food_id={self.food_id}, restaurant_id={self.restaurant_id}, client_id={self.client_id}, order_time={self.order_time})"
+
+   
+   
+# class Order(db.Model):
+#     __tablename__ = 'orders'
+
+#     id = db.Column(db.Integer, primary_key=True)
+#     food_id = db.Column(db.Integer, nullable=False)
+#     restaurant_id = db.Column(db.Integer, nullable=False)
+#     client_id = db.Column(db.Integer, nullable=False)
+#     order_time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    
+
+
+
+#     def __repr__(self):
+#return f"Order(id={self.id}, food_id={self.food_id}, restaurant_id={self.restaurant_id}, client_id={self.client_id}, order_time={self.order_time})"

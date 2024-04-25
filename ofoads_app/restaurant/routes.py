@@ -5,6 +5,7 @@ import random
 from .. import db
 from ..models import User, Restaurant, Food, Order
 from ..forms import RestaurantRegistrationForm
+from sqlalchemy.orm import joinedload
 
 
 from . import restaurant
@@ -61,7 +62,9 @@ def add_food():
 @restaurant.route('/orders')
 def orders():
     # Query pending orders for the current restaurant
-    pending_orders = Order.query.filter_by(restaurant_id=current_user.restaurant_id).all()
+    pending_orders = Order.query.filter_by(restaurant_id=current_user.restaurant_id).options(joinedload(Order.food)).all()
     
+    
+
     # Render the orders template with pending orders
     return render_template('restaurant/orders.html', orders=pending_orders)
