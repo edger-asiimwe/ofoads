@@ -119,6 +119,9 @@ class Food(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
+    # Define the relationship with orders
+    orders = db.relationship("Order", back_populates="food")
+
     def get_foods_by_restaurant(self):
         foods = Food.query.filter_by(restaurant_id=current_user.restaurant_id).order_by(Food.created_at.desc()).all()
         return [{
